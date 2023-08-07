@@ -10,26 +10,26 @@
 </head>
 <body>
     <header>BLACKJACK</header>
-    <section id="result">You win!</section>
+    <section id="result">Place a bet!</section>
     <main id="dealer">DEALER
         <div id="dealercards">
-            <img src="css/card-library/images/backs/red.svg">
+            <!-- <img src="css/card-library/images/backs/red.svg"> -->
     </main>   
-    <div id="dealertotal">Dealer total: 9</div>
+    <div>Dealer total: <span id="dealertotal"></span></div>
     <main id="player">PLAYER
         <div id="playercards"></div>
     </main>
-    <div id="playertotal">Player total: 21</div>
+    <div>Player total: <span id="playertotal"></span></div>
     <section id="buttons">
         <button id="hit">Hit</button>
         <button id="stand">Stand</button>
     </section>
-    <section id="money">Total Money: $1000</section>
+    <section>Total Money: $<span id="money">1000</span></section>
     <section id="bet">Bet
-        <button id="betS">$5</button>
-        <button id="betM">$10</button>
-        <button id="betL">$50</button>
-        <button id="betXL">$100</button>
+        <button>$<span id="betS">5</span></button>
+        <button>$<span id="betM">10</span></button>
+        <button>$<span id="betL">50</span></button>
+        <button>$<span id="betXL">100</span></button>
     </section>
     <button id="reset">PLAY AGAIN</button>
 </body>

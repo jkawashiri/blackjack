@@ -9,34 +9,30 @@ const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', '
 const originalDeck = buildDeck()
 
 /*----- state variables -----*/
-let dealerTotal, playerTotal, cards, turn, winner
+let dealerTotal, playerTotal, turn, winner, totalMoney
 
 /*----- cached elements  -----*/
-
+const resetButton = document.getElementById('reset')
 
 /*----- event listeners -----*/
-
+document.getElementById('bet').addEventListener('click', render)
 
 /*----- functions -----*/
 init ()
 
 function init() {
-    cards = []
     dealerTotal = 0
     playerTotal = 0
+    totalMoney = 1000
     turn = 1
     winner = null
     render()
 }
 
 function render() {
-    renderCards()
     renderTotals()
     renderMessage()
-}
-
-function renderCards() {
-
+    renderReset()
 }
 
 function renderTotals() {
@@ -45,6 +41,10 @@ function renderTotals() {
 
 function renderMessage() {
 
+}
+
+function renderReset() {
+    resetButton.style.visibility = totalMoney = 0 ? 'visible' : 'hidden'
 }
 
 function buildDeck() {

@@ -10,6 +10,8 @@ const deck = []
 
 /*----- state variables -----*/
 let dealerTotal, playerTotal, totalMoney, turn, winner
+let dealerCards = []
+let playerCards = []
 let shuffledDeck = []
 
 /*----- cached elements  -----*/
@@ -41,7 +43,11 @@ function render() {
 }
 
 function renderTotals() {
-
+    playerTotal = playerCards.reduce((acc, curr) => acc + curr, 0)
+    document.getElementById('playertotal').innerHTML = playerTotal
+    
+    dealerTotal = dealerCards.reduce((acc, curr) => acc + curr, 0)
+    document.getElementById('dealertotal').innerHTML = dealerTotal
 }
 
 function renderMessage() {
@@ -74,16 +80,29 @@ function getShuffledDeck() {
 }
 
 function playGame() {
-    let playerCard1 = document.querySelector('#playercards').appendChild(document.createElement('div'))
-    playerCard1.setAttribute('class', `card ${shuffledDeck.pop().face}`)
-    let playerCard2 = document.querySelector('#playercards').appendChild(document.createElement('div'))
-    playerCard2.setAttribute('class', `card ${shuffledDeck.pop().face}`)
-    let dealerCard1 = document.querySelector('#dealercards').appendChild(document.createElement('div'))
-    dealerCard1.setAttribute('class', `card ${shuffledDeck.pop().face}`)
-    let dealerCard2 = document.querySelector('#dealercards').appendChild(document.createElement('div'))
-    dealerCard2.setAttribute('class', `card ${shuffledDeck.pop().face}`)
+    let dealerClass1 = document.querySelector('#dealercards').appendChild(document.createElement('div'))
+    let dealerCard1 = shuffledDeck.pop()
+    dealerClass1.setAttribute('class', `card ${dealerCard1.face}`)
+
+    let dealerClass2 = document.querySelector('#dealercards').appendChild(document.createElement('div'))
+    let dealerCard2 = shuffledDeck.pop()
+    dealerClass2.setAttribute('class', `card ${dealerCard2.face}`)
+    
+    dealerCards.push(dealerCard1.value, dealerCard2.value)
+
+    let playerClass1 = document.querySelector('#playercards').appendChild(document.createElement('div'))
+    let playerCard1 = shuffledDeck.pop()
+    playerClass1.setAttribute('class', `card ${playerCard1.face}`)
+
+    let playerClass2 = document.querySelector('#playercards').appendChild(document.createElement('div'))
+    let playerCard2 = shuffledDeck.pop()
+    playerClass2.setAttribute('class', `card ${playerCard2.face}`) 
+    
+    playerCards.push(playerCard1.value, playerCard2.value)
+
     hit()
     stand()
+    render()
 }
 
 function hit() {

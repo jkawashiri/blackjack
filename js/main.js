@@ -6,10 +6,11 @@ const PLAYERS = {
 
 const suits = ['s', 'c', 'd', 'h']
 const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A']
-const originalDeck = buildDeck()
+const deck = []
 
 /*----- state variables -----*/
 let dealerTotal, playerTotal, totalMoney, turn, winner
+let shuffledDeck = []
 
 /*----- cached elements  -----*/
 const resetButton = document.getElementById('reset')
@@ -52,7 +53,6 @@ function renderReset() {
 }
 
 function buildDeck() {
-    const deck = []
     suits.forEach(function(suit) {
         ranks.forEach(function(rank) {
             deck.push({
@@ -65,8 +65,7 @@ function buildDeck() {
 }
 
 function getShuffledDeck() {
-    const copyDeck = [...originalDeck]
-    const shuffledDeck = []
+    const copyDeck = [...deck]
     while(copyDeck.length) {
         const rndIdx = Math.floor(Math.random() * copyDeck.length)
         shuffledDeck.push(copyDeck.splice(rndIdx, 1)[0])
@@ -75,12 +74,20 @@ function getShuffledDeck() {
 }
 
 function playGame() {
+    let playerCard1 = document.querySelector('#playercards').appendChild(document.createElement('div'))
+    playerCard1.setAttribute('class', `card ${shuffledDeck.pop().face}`)
+    let playerCard2 = document.querySelector('#playercards').appendChild(document.createElement('div'))
+    playerCard2.setAttribute('class', `card ${shuffledDeck.pop().face}`)
+    let dealerCard1 = document.querySelector('#dealercards').appendChild(document.createElement('div'))
+    dealerCard1.setAttribute('class', `card ${shuffledDeck.pop().face}`)
+    let dealerCard2 = document.querySelector('#dealercards').appendChild(document.createElement('div'))
+    dealerCard2.setAttribute('class', `card ${shuffledDeck.pop().face}`)
     hit()
     stand()
 }
 
 function hit() {
-
+    
 }
 
 function stand() {

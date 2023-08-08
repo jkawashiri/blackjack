@@ -45,7 +45,7 @@ function render() {
 function renderTotals() {
     playerTotal = playerCards.reduce((acc, curr) => acc + curr, 0)
     document.getElementById('playertotal').innerHTML = playerTotal
-    
+
     dealerTotal = dealerCards.reduce((acc, curr) => acc + curr, 0)
     document.getElementById('dealertotal').innerHTML = dealerTotal
 }
@@ -100,15 +100,21 @@ function playGame() {
     
     playerCards.push(playerCard1.value, playerCard2.value)
 
-    hit()
-    stand()
     render()
 }
 
 function hit() {
-    
+    if (playerTotal < 21) {
+        let playerClass = document.querySelector('#playercards').appendChild(document.createElement('div'))
+        let playerCard = shuffledDeck.pop()
+        playerClass.setAttribute('class', `card ${playerCard.face}`)
+        
+        playerCards.push(playerCard.value)
+    }
+
+    render()
 }
 
 function stand() {
-
+    turn = turn * -1
 }

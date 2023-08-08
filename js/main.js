@@ -9,13 +9,15 @@ const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', '
 const originalDeck = buildDeck()
 
 /*----- state variables -----*/
-let dealerTotal, playerTotal, turn, winner, totalMoney
+let dealerTotal, playerTotal, totalMoney, turn, winner
 
 /*----- cached elements  -----*/
 const resetButton = document.getElementById('reset')
 
 /*----- event listeners -----*/
-document.getElementById('bet').addEventListener('click', render)
+document.getElementById('bet').addEventListener('click', playGame)
+document.getElementById('hit').addEventListener('click', hit)
+document.getElementById('stand').addEventListener('click', stand)
 
 /*----- functions -----*/
 init ()
@@ -33,6 +35,8 @@ function render() {
     renderTotals()
     renderMessage()
     renderReset()
+    buildDeck()
+    getShuffledDeck()
 }
 
 function renderTotals() {
@@ -68,4 +72,17 @@ function getShuffledDeck() {
         shuffledDeck.push(copyDeck.splice(rndIdx, 1)[0])
     }
     return shuffledDeck
+}
+
+function playGame() {
+    hit()
+    stand()
+}
+
+function hit() {
+
+}
+
+function stand() {
+
 }

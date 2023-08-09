@@ -1,15 +1,10 @@
 /*----- constants -----*/
-const PLAYERS = {
-    '1': 'Player',
-    '-1': 'Dealer',
-}
-
 const suits = ['s', 'c', 'd', 'h']
 const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A']
 const deck = []
 
 /*----- state variables -----*/
-let dealerTotal, playerTotal, totalMoney, turn, winner
+let dealerTotal, playerTotal, totalMoney, turn, winner, dealerAce, playerAce
 let dealerCards = []
 let playerCards = []
 let shuffledDeck = []
@@ -29,7 +24,6 @@ function init() {
     dealerTotal = 0
     playerTotal = 0
     totalMoney = 1000
-    turn = 1
     winner = null
     buildDeck()
     getShuffledDeck()
@@ -43,7 +37,7 @@ function render() {
 }
 
 function renderTotals() {
-    playerTotal = playerCards.reduce((acc, curr) => acc + curr, 0)
+    let playerTotal = playerCards.reduce((acc, curr) => acc + curr, 0)
     document.getElementById('playertotal').innerHTML = playerTotal
 
     dealerTotal = dealerCards.reduce((acc, curr) => acc + curr, 0)
@@ -124,4 +118,19 @@ function dealer() {
         dealerCards.push(dealerCard.value)
     }
     render()
+}
+
+function ace(cards) {
+    if (cards.includes(11)) {
+        return 1
+    }
+    return 0
+}
+
+function subtractAce(total, aceCount) {
+    while (total > 21 && aceCount > 0) {
+        total -= 10
+        aceCount -= 1
+    }
+    return total
 }

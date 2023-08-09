@@ -16,6 +16,8 @@ let hidden
 
 let shuffledDeck = []
 
+let playerCards = []
+
 let canHit = true
 
 /*----- cached elements  -----*/
@@ -38,14 +40,15 @@ function init() {
 }
 
 function render() {
-    renderTotals()
+    // renderTotals()
     renderMessage()
     renderReset()
 }
 
-function renderTotals() {
-    
-}
+// function renderTotals() {
+//     let playerTotal = playerCards.reduce((acc, curr) => acc + curr, 0)
+//     document.getElementById('playertotal').innerHTML = playerTotal 
+// }
 
 function renderMessage() {
 
@@ -81,12 +84,12 @@ function playGame() {
     dealerTotal += hidden.value
     dealerAceCount += checkAce(hidden)
 
-    while(dealerTotal < 17) {
-        let cardImg = document.querySelector('#dealercards').appendChild(document.createElement('div'))
-        let card = shuffledDeck.pop()
-        cardImg.setAttribute('class', `card ${card.face}`)
-        dealerTotal += card.value
-        dealerAceCount += checkAce(card)
+    for (let i = 0; i < 1; i++) {
+        let cardImg = document.querySelector('#dealercards').appendChild(document.createElement('div'));
+        let card = shuffledDeck.pop();
+        cardImg.setAttribute('class', `card ${card.face}`);
+        dealerTotal += card.value;
+        dealerAceCount += checkAce(card);
     }
 
     for (let i = 0; i < 2; i++) {
@@ -95,6 +98,7 @@ function playGame() {
         cardImg.setAttribute('class', `card ${card.face}`)
         playerTotal += card.value
         playerAceCount += checkAce(card)
+        playerCards.push(card.value)
     }
     render()
 }
@@ -109,6 +113,7 @@ function hit() {
     cardImg.setAttribute('class', `card ${card.face}`)
     playerTotal += card.value
     playerAceCount += checkAce(card)
+    playerCards.push(card.value)
 
     if (reduceAce(playerTotal, playerAceCount) > 21) {
         canHit = false
@@ -117,6 +122,14 @@ function hit() {
 }
 
 function stand() {
+    while(dealerTotal < 17) {
+        let cardImg = document.querySelector('#dealercards').appendChild(document.createElement('div'))
+        let card = shuffledDeck.pop()
+        cardImg.setAttribute('class', `card ${card.face}`)
+        dealerTotal += card.value
+        dealerAceCount += checkAce(card)
+    }
+    
     dealerTotal = reduceAce(dealerTotal, dealerAceCount)
     playerTotal = reduceAce(playerTotal, playerAceCount)
 

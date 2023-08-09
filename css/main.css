@@ -37,12 +37,9 @@ header {
     align-items: center;
 } 
 
-#playercards img, #dealercards img {
-    height: 175px;
-    width: 125px;
-    border: 1px solid #c3c3c3;
-    margin: 1px;
-}
+
+
+
 
 
  

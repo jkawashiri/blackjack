@@ -4,10 +4,19 @@ const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', '
 const deck = []
 
 /*----- state variables -----*/
-let dealerTotal, playerTotal, totalMoney, turn, winner, dealerAce, playerAce
-let dealerCards = []
-let playerCards = []
+let totalMoney, winner
+
+let dealerTotal = 0
+let playerTotal = 0
+
+let dealerAceCount = 0
+let playerAceCount = 0
+
+let hidden
+
 let shuffledDeck = []
+
+let canHit = true
 
 /*----- cached elements  -----*/
 const resetButton = document.getElementById('reset')
@@ -15,18 +24,16 @@ const resetButton = document.getElementById('reset')
 /*----- event listeners -----*/
 document.getElementById('bet').addEventListener('click', playGame)
 document.getElementById('hit').addEventListener('click', hit)
-document.getElementById('stand').addEventListener('click', dealer)
+document.getElementById('stand').addEventListener('click', stand)
 
 /*----- functions -----*/
 init ()
 
 function init() {
-    dealerTotal = 0
-    playerTotal = 0
     totalMoney = 1000
     winner = null
     buildDeck()
-    getShuffledDeck()
+    shuffleDeck()
     render()
 }
 
@@ -37,11 +44,7 @@ function render() {
 }
 
 function renderTotals() {
-    let playerTotal = playerCards.reduce((acc, curr) => acc + curr, 0)
-    document.getElementById('playertotal').innerHTML = playerTotal
-
-    dealerTotal = dealerCards.reduce((acc, curr) => acc + curr, 0)
-    document.getElementById('dealertotal').innerHTML = dealerTotal
+    
 }
 
 function renderMessage() {
@@ -64,7 +67,7 @@ function buildDeck() {
     return deck
 }
 
-function getShuffledDeck() {
+function shuffleDeck() {
     const copyDeck = [...deck]
     while(copyDeck.length) {
         const rndIdx = Math.floor(Math.random() * copyDeck.length)
@@ -74,63 +77,87 @@ function getShuffledDeck() {
 }
 
 function playGame() {
-    let dealerClass1 = document.querySelector('#dealercards').appendChild(document.createElement('div'))
-    let dealerCard1 = shuffledDeck.pop()
-    dealerClass1.setAttribute('class', `card ${dealerCard1.face}`)
+    hidden = shuffledDeck.pop()
+    dealerTotal += hidden.value
+    dealerAceCount += checkAce(hidden)
 
-    let dealerClass2 = document.querySelector('#dealercards').appendChild(document.createElement('div'))
-    let dealerCard2 = shuffledDeck.pop()
-    dealerClass2.setAttribute('class', `card ${dealerCard2.face}`)
-    
-    dealerCards.push(dealerCard1.value, dealerCard2.value)
+    while(dealerTotal < 17) {
+        let cardImg = document.querySelector('#dealercards').appendChild(document.createElement('div'))
+        let card = shuffledDeck.pop()
+        cardImg.setAttribute('class', `card ${card.face}`)
+        dealerTotal += card.value
+        dealerAceCount += checkAce(card)
+    }
 
-    let playerClass1 = document.querySelector('#playercards').appendChild(document.createElement('div'))
-    let playerCard1 = shuffledDeck.pop()
-    playerClass1.setAttribute('class', `card ${playerCard1.face}`)
-
-    let playerClass2 = document.querySelector('#playercards').appendChild(document.createElement('div'))
-    let playerCard2 = shuffledDeck.pop()
-    playerClass2.setAttribute('class', `card ${playerCard2.face}`) 
-    
-    playerCards.push(playerCard1.value, playerCard2.value)
-
+    for (let i = 0; i < 2; i++) {
+        let cardImg = document.querySelector('#playercards').appendChild(document.createElement('div'))
+        let card = shuffledDeck.pop()
+        cardImg.setAttribute('class', `card ${card.face}`)
+        playerTotal += card.value
+        playerAceCount += checkAce(card)
+    }
     render()
 }
 
 function hit() {
-    if (playerTotal < 21) {
-        let playerClass = document.querySelector('#playercards').appendChild(document.createElement('div'))
-        let playerCard = shuffledDeck.pop()
-        playerClass.setAttribute('class', `card ${playerCard.face}`)
-        
-        playerCards.push(playerCard.value)
+    if (!canHit) {
+        return;
     }
 
-    render()
-}
+    let cardImg = document.querySelector('#playercards').appendChild(document.createElement('div'))
+    let card = shuffledDeck.pop()
+    cardImg.setAttribute('class', `card ${card.face}`)
+    playerTotal += card.value
+    playerAceCount += checkAce(card)
 
-function dealer() {
-    while (dealerTotal < 17) {
-        let dealerClass = document.querySelector('#dealercards').appendChild(document.createElement('div'))
-        let dealerCard = shuffledDeck.pop()
-        dealerClass.setAttribute('class', `card ${dealerCard.face}`)
-        
-        dealerCards.push(dealerCard.value)
+    if (reduceAce(playerTotal, playerAceCount) > 21) {
+        canHit = false
     }
     render()
 }
 
-function ace(cards) {
-    if (cards.includes(11)) {
+function stand() {
+    dealerTotal = reduceAce(dealerTotal, dealerAceCount)
+    playerTotal = reduceAce(playerTotal, playerAceCount)
+
+    canHit = false
+    document.querySelector('.card.back-red').classList.replace('back-red', hidden.face) 
+
+    let message = ''
+    if (playerTotal > 21) {
+        message = 'You Lose!'
+    }
+    else if (dealerTotal > 21) {
+        message = 'You Win!'
+    }
+    else if (playerTotal === dealerTotal) {
+        message = 'Tie!'
+    }
+    else if (playerTotal > dealerTotal) {
+        message = 'You Win!'
+    }
+    else if (playerTotal < dealerTotal) {
+        message = 'You Lose!'
+    }
+
+    document.getElementById('dealertotal').innerText = dealerTotal
+    document.getElementById('playertotal').innerText = playerTotal
+    document.getElementById('result').innerText = message
+
+    render()
+}
+
+function checkAce(card) {
+    if (card.face.includes('A')) {
         return 1
     }
     return 0
 }
 
-function subtractAce(total, aceCount) {
-    while (total > 21 && aceCount > 0) {
-        total -= 10
-        aceCount -= 1
+function reduceAce(playerTotal, playerAceCount) {
+    while (playerTotal > 21 && playerAceCount > 0) {
+        playerTotal -= 10
+        playerAceCount -= 1
     }
-    return total
+    return playerTotal
 }

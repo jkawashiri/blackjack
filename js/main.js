@@ -20,7 +20,7 @@ const resetButton = document.getElementById('reset')
 /*----- event listeners -----*/
 document.getElementById('bet').addEventListener('click', playGame)
 document.getElementById('hit').addEventListener('click', hit)
-document.getElementById('stand').addEventListener('click', stand)
+document.getElementById('stand').addEventListener('click', dealer)
 
 /*----- functions -----*/
 init ()
@@ -31,6 +31,8 @@ function init() {
     totalMoney = 1000
     turn = 1
     winner = null
+    buildDeck()
+    getShuffledDeck()
     render()
 }
 
@@ -38,8 +40,6 @@ function render() {
     renderTotals()
     renderMessage()
     renderReset()
-    buildDeck()
-    getShuffledDeck()
 }
 
 function renderTotals() {
@@ -115,6 +115,13 @@ function hit() {
     render()
 }
 
-function stand() {
-    turn = turn * -1
+function dealer() {
+    while (dealerTotal < 17) {
+        let dealerClass = document.querySelector('#dealercards').appendChild(document.createElement('div'))
+        let dealerCard = shuffledDeck.pop()
+        dealerClass.setAttribute('class', `card ${dealerCard.face}`)
+        
+        dealerCards.push(dealerCard.value)
+    }
+    render()
 }

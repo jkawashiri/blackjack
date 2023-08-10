@@ -4,18 +4,14 @@ const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', '
 const deck = []
 
 /*----- state variables -----*/
-// let totalMoney
-
 let shuffledDeck = []
 
 let result, dealerTotal, playerTotal, dealerAceCount, playerAceCount, hidden, canHit, playerCards, message
 
 /*----- cached elements  -----*/
 const resetButton = document.getElementById('reset')
-// const betButton = document.getElementById('bet')
 
 /*----- event listeners -----*/
-// betButton.addEventListener('click', playGame)
 document.getElementById('hit').addEventListener('click', hit)
 document.getElementById('stand').addEventListener('click', stand)
 resetButton.addEventListener('click', init)
@@ -24,7 +20,6 @@ resetButton.addEventListener('click', init)
 init ()
 
 function init() {
-    // totalMoney = 1000
     result = null
     dealerTotal = 0
     playerTotal = 0
@@ -46,13 +41,12 @@ function init() {
 }
 
 function render() {
-    renderTotals()
+    renderPlayerTotal()
     renderMessage()
     renderReset()
-    // renderMoney()
 }
 
-function renderTotals() {
+function renderPlayerTotal() {
     playerTotal = reduceAce(playerTotal, playerAceCount)
     document.getElementById('playertotal').innerText = playerTotal
 }
@@ -60,19 +54,19 @@ function renderTotals() {
 function renderMessage() {
     if (result === true) {
         if (playerTotal > 21) {
-            message = 'You Lose!'
+            message = 'Dealer Wins!'
         }
         else if (dealerTotal > 21) {
             message = 'You Win!'
         }
         else if (playerTotal === dealerTotal) {
-            message = 'Tie!'
+            message = "It's a tie!"
         }
         else if (playerTotal > dealerTotal) {
             message = 'You Win!'
         }
         else if (playerTotal < dealerTotal) {
-            message = 'You Lose!'
+            message = 'Dealer Wins!'
         }
         document.getElementById('result').innerText = message
     }
@@ -81,17 +75,6 @@ function renderMessage() {
 function renderReset() {
     resetButton.style.visibility = result ? 'visible' : 'hidden'
 }
-
-// function renderMoney() {
-//     if (winner === true) {
-//         if (message === 'You Win!') {
-//             totalMoney += betAmount
-//         } else if (message === 'You Lose!') {
-//             totalMoney -= betAmount
-//         }
-//         document.getElementById('money').innerText = totalMoney
-//     }
-// }
 
 function buildDeck() {
     suits.forEach(function(suit) {
@@ -173,15 +156,12 @@ function stand() {
         cardImg.setAttribute('class', `card ${card.face}`)
         dealerTotal += card.value
         dealerAceCount += checkAce(card)
+        dealerTotal = reduceAce(dealerTotal, dealerAceCount)
     }
     
-    dealerTotal = reduceAce(dealerTotal, dealerAceCount)
-
-    canHit = false
     document.querySelector('.card.back-red').classList.replace('back-red', hidden.face) 
-
     document.getElementById('dealertotal').innerText = dealerTotal
-    
+
     result = true
 
     render()

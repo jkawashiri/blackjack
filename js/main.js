@@ -150,11 +150,18 @@ function hit() {
     cardImg.setAttribute('class', `card ${card.face}`)
     playerTotal += card.value
     playerAceCount += checkAce(card)
+
+    if (playerTotal > 21 && playerAceCount > 0) {
+        playerTotal -= 10;
+        playerAceCount--;
+    }
+
     playerCards.push(card.value)
 
-    if (reduceAce(playerTotal, playerAceCount) > 21) {
-        canHit = false
+    if (playerTotal > 21) {
+        canHit = false;
     }
+
     render()
 }
 

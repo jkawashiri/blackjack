@@ -4,7 +4,7 @@ const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', '
 const deck = []
 
 /*----- state variables -----*/
-let totalMoney, winner
+let totalMoney, result
 
 let dealerTotal = 0
 let playerTotal = 0
@@ -40,18 +40,35 @@ function init() {
 }
 
 function render() {
-    // renderTotals()
+    renderTotals()
     renderMessage()
     renderReset()
 }
 
-// function renderTotals() {
-//     let playerTotal = playerCards.reduce((acc, curr) => acc + curr, 0)
-//     document.getElementById('playertotal').innerHTML = playerTotal 
-// }
+function renderTotals() {
+    document.getElementById('playertotal').innerText = playerTotal 
+}
 
 function renderMessage() {
-
+    if (result === true) {
+        let message = ''
+        if (playerTotal > 21) {
+            message = 'You Lose!'
+        }
+        else if (dealerTotal > 21) {
+            message = 'You Win!'
+        }
+        else if (playerTotal === dealerTotal) {
+            message = 'Tie!'
+        }
+        else if (playerTotal > dealerTotal) {
+            message = 'You Win!'
+        }
+        else if (playerTotal < dealerTotal) {
+            message = 'You Lose!'
+        }
+        document.getElementById('result').innerText = message
+    }
 }
 
 function renderReset() {
@@ -100,6 +117,7 @@ function playGame() {
         playerAceCount += checkAce(card)
         playerCards.push(card.value)
     }
+
     render()
 }
 
@@ -136,26 +154,9 @@ function stand() {
     canHit = false
     document.querySelector('.card.back-red').classList.replace('back-red', hidden.face) 
 
-    let message = ''
-    if (playerTotal > 21) {
-        message = 'You Lose!'
-    }
-    else if (dealerTotal > 21) {
-        message = 'You Win!'
-    }
-    else if (playerTotal === dealerTotal) {
-        message = 'Tie!'
-    }
-    else if (playerTotal > dealerTotal) {
-        message = 'You Win!'
-    }
-    else if (playerTotal < dealerTotal) {
-        message = 'You Lose!'
-    }
-
     document.getElementById('dealertotal').innerText = dealerTotal
-    document.getElementById('playertotal').innerText = playerTotal
-    document.getElementById('result').innerText = message
+    
+    result = true
 
     render()
 }

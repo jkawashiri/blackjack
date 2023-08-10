@@ -6,7 +6,7 @@ const deck = []
 /*----- state variables -----*/
 let shuffledDeck = []
 
-let result, dealerTotal, playerTotal, dealerAceCount, playerAceCount, hidden, canHit, playerCards, message
+let result, dealerTotal, playerTotal, dealerAceCount, playerAceCount, hidden, canHit, message
 
 /*----- cached elements  -----*/
 const resetButton = document.getElementById('reset')
@@ -26,7 +26,6 @@ function init() {
     dealerAceCount = 0
     playerAceCount = 0
     hidden = null
-    playerCards = []
     canHit = true
 
     document.querySelector('#dealercards').innerHTML = ''
@@ -118,7 +117,6 @@ function playGame() {
         cardImg.setAttribute('class', `card ${card.face}`)
         playerTotal += card.value
         playerAceCount += checkAce(card)
-        playerCards.push(card.value)
     }
 
     render()
@@ -139,8 +137,6 @@ function hit() {
         playerTotal -= 10;
         playerAceCount--;
     }
-
-    playerCards.push(card.value)
 
     if (playerTotal > 21) {
         canHit = false;
@@ -163,6 +159,7 @@ function stand() {
     document.getElementById('dealertotal').innerText = dealerTotal
 
     result = true
+    canHit = false
 
     render()
 }

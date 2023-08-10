@@ -37,6 +37,7 @@ function init() {
     document.querySelector('#dealercards').innerHTML = ''
     document.querySelector('#playercards').innerHTML = ''
     document.getElementById('result').innerHTML = ''
+    document.getElementById('dealertotal').innerHTML = ''
 
     buildDeck()
     shuffleDeck()

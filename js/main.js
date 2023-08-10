@@ -134,12 +134,13 @@ function hit() {
     playerAceCount += checkAce(card)
 
     if (playerTotal > 21 && playerAceCount > 0) {
-        playerTotal -= 10;
-        playerAceCount--;
+        playerTotal -= 10
+        playerAceCount -= 1
     }
 
     if (playerTotal > 21) {
-        canHit = false;
+        canHit = false
+        stand()
     }
 
     render()
@@ -152,9 +153,14 @@ function stand() {
         cardImg.setAttribute('class', `card ${card.face}`)
         dealerTotal += card.value
         dealerAceCount += checkAce(card)
-        dealerTotal = reduceAce(dealerTotal, dealerAceCount)
+        if (dealerTotal > 21 && dealerAceCount > 0) {
+            dealerTotal -= 10
+            dealerAceCount -= 1
+        }
     }
-    
+
+    dealerTotal = reduceAce(dealerTotal, dealerAceCount)
+
     document.querySelector('.card.back-red').classList.replace('back-red', hidden.face) 
     document.getElementById('dealertotal').innerText = dealerTotal
 

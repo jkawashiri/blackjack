@@ -4,38 +4,43 @@ const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', '
 const deck = []
 
 /*----- state variables -----*/
-let totalMoney, result
-
-let dealerTotal = 0
-let playerTotal = 0
-
-let dealerAceCount = 0
-let playerAceCount = 0
-
-let hidden
+// let totalMoney
 
 let shuffledDeck = []
 
-let playerCards = []
-
-let canHit = true
+let result, dealerTotal, playerTotal, dealerAceCount, playerAceCount, hidden, canHit, playerCards, message
 
 /*----- cached elements  -----*/
 const resetButton = document.getElementById('reset')
+// const betButton = document.getElementById('bet')
 
 /*----- event listeners -----*/
-document.getElementById('bet').addEventListener('click', playGame)
+// betButton.addEventListener('click', playGame)
 document.getElementById('hit').addEventListener('click', hit)
 document.getElementById('stand').addEventListener('click', stand)
+resetButton.addEventListener('click', init)
 
 /*----- functions -----*/
 init ()
 
 function init() {
-    totalMoney = 1000
-    winner = null
+    // totalMoney = 1000
+    result = null
+    dealerTotal = 0
+    playerTotal = 0
+    dealerAceCount = 0
+    playerAceCount = 0
+    hidden = null
+    playerCards = []
+    canHit = true
+
+    document.querySelector('#dealercards').innerHTML = ''
+    document.querySelector('#playercards').innerHTML = ''
+    document.getElementById('result').innerHTML = ''
+
     buildDeck()
     shuffleDeck()
+    playGame()
     render()
 }
 
@@ -43,15 +48,16 @@ function render() {
     renderTotals()
     renderMessage()
     renderReset()
+    // renderMoney()
 }
 
 function renderTotals() {
-    document.getElementById('playertotal').innerText = playerTotal 
+    playerTotal = reduceAce(playerTotal, playerAceCount)
+    document.getElementById('playertotal').innerText = playerTotal
 }
 
 function renderMessage() {
     if (result === true) {
-        let message = ''
         if (playerTotal > 21) {
             message = 'You Lose!'
         }
@@ -72,8 +78,19 @@ function renderMessage() {
 }
 
 function renderReset() {
-    resetButton.style.visibility = totalMoney = 0 ? 'visible' : 'hidden'
+    resetButton.style.visibility = result ? 'visible' : 'hidden'
 }
+
+// function renderMoney() {
+//     if (winner === true) {
+//         if (message === 'You Win!') {
+//             totalMoney += betAmount
+//         } else if (message === 'You Lose!') {
+//             totalMoney -= betAmount
+//         }
+//         document.getElementById('money').innerText = totalMoney
+//     }
+// }
 
 function buildDeck() {
     suits.forEach(function(suit) {
@@ -100,6 +117,8 @@ function playGame() {
     hidden = shuffledDeck.pop()
     dealerTotal += hidden.value
     dealerAceCount += checkAce(hidden)
+
+    document.querySelector('#dealercards').appendChild(document.createElement('div')).setAttribute('class', 'card back-red')
 
     for (let i = 0; i < 1; i++) {
         let cardImg = document.querySelector('#dealercards').appendChild(document.createElement('div'));
@@ -149,7 +168,6 @@ function stand() {
     }
     
     dealerTotal = reduceAce(dealerTotal, dealerAceCount)
-    playerTotal = reduceAce(playerTotal, playerAceCount)
 
     canHit = false
     document.querySelector('.card.back-red').classList.replace('back-red', hidden.face) 

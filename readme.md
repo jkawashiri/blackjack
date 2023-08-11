@@ -16,7 +16,7 @@ After clicking "Stand," the dealer's cards are automatically drawn and a result 
 - JavaScript
 
 # Getting Started
-Click here to play the game. 
+Click [here](https://jkawashiri.github.io/blackjack/) to play the game. 
 Once loaded, cards will already be dealt to both you and the dealer. All you have to do is hit or stand depending on what you want to do. Good luck!
 
 # Next Steps

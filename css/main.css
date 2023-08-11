@@ -10,7 +10,6 @@ body {
     font-family: 'Playfair Display', serif;
     background-color: #CCD4BF;
     display: flex;
-    justify-content: top;
     align-items: center;
     flex-direction: column;
   }
@@ -31,14 +30,7 @@ header {
     text-align: center;
 }
 
-#playercards, #dealercards {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-} 
-
-#result {
+#message {
     font-style: italic;
     font-size: 20px;
 }

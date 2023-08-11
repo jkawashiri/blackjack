@@ -7,7 +7,7 @@ All cards are dealt upon loading the game.
 ![Screenshot](https://i.imgur.com/yHk0mPh.png)
 After clicking "Hit," another card is added and your total is updated.
 ![Screenshot](https://i.imgur.com/JaXCqVR.png)
-After clicking "Stand," the dealer's cards are automatically drawn and a result is produced at the top.
+After clicking "Stand," the dealer's cards are automatically drawn and a result is produced at the top. You can then reset by clicking "Play Again."
 ![Screenshot](https://i.imgur.com/RaJrlqN.png)
 
 # Technologies Used
